@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --forest: #0D2F31;
+    --steel: #6184AB;
+    --cream: #F5EFE2;
+    --cream-dark: #EDE4D0;
+    --sand: #DDD5C2;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--forest);
+    background: #fff;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "adonis-web", "Cormorant Garamond", Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.55s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { transform: translateX(-150%); }
+    100% { transform: translateX(150%); }
+  }
+}
