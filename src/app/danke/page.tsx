@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { SiteFooter } from "../page";
+import { SiteFooter } from "@/components/siteShared";
 
 // ── Platzhalter-Konstanten (hier zentral anpassen) ──────────────────────────
 const WHATSAPP_LINK = process.env.NEXT_PUBLIC_WHATSAPP_LINK ?? "WHATSAPP_LINK";

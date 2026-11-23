@@ -1,4 +1,4 @@
-import { SiteFooter } from "../page";
+import { SiteFooter } from "@/components/siteShared";
 
 export default function DatenschutzPage() {
   return (
