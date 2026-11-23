@@ -47,7 +47,7 @@ export async function GET() {
       ),
     ])
 
-    const upcoming: Array<{ start_time: string; status: string }> = upcomingData.collection ?? []
+    const upcoming: Array<{ name: string; start_time: string; end_time: string; status: string; location?: { type?: string } }> = upcomingData.collection ?? []
     const past: Array<{ start_time: string; status: string }> = pastData.collection ?? []
 
     const todayCount = upcoming.filter(
@@ -79,7 +79,7 @@ export async function GET() {
         })
       ),
       upcoming: upcoming.slice(0, 10).map(
-        (e: { name: string; start_time: string; end_time: string; location?: { type?: string } }) => ({
+        (e) => ({
           name: e.name,
           startTime: e.start_time,
           endTime: e.end_time,
