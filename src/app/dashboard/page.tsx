@@ -46,6 +46,12 @@ export default function Dashboard() {
   const [stripe, setStripe] = useState<StripeData | null>(null)
   const [notion, setNotion] = useState<NotionData | null>(null)
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system')
+  const [zusagen, setZusagen] = useState(0)
+
+  const todayKey = () => {
+    const d = new Date()
+    return `hmc_zusagen_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }
 
   const fetchAll = useCallback(async () => {
     const [c, s, n] = await Promise.all([
@@ -62,10 +68,13 @@ export default function Dashboard() {
     if (typeof window === 'undefined') return
     const hash = window.location.hash.replace('#', '') as TabId
     if (hash) setTab(hash)
-    // Check session auth
     if (sessionStorage.getItem('hmc_auth') === '1') {
       setAuthed(true)
     }
+    try {
+      const saved = localStorage.getItem(todayKey())
+      if (saved !== null) setZusagen(parseInt(saved, 10) || 0)
+    } catch {}
   }, [])
 
   useEffect(() => {
@@ -258,6 +267,35 @@ export default function Dashboard() {
                   <KpiCard label="Aktive Abos" value={stripe?.activeSubscriptions ?? 0} sub="Stripe Subscriptions" />
                   <KpiCard label="Leads gesamt" value={notion?.total ?? 0} sub={notion?.error ? 'API Fehler' : 'Notion CRM'} />
                   <KpiCard label="Neue Kunden (30 Tage)" value={stripe?.newCustomers30d ?? 0} sub="Stripe" />
+                </div>
+
+                {/* Calls & Mündliche Zusagen */}
+                <div style={{ marginBottom: 20, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'var(--accent)', marginBottom: 12 }}>Calls & Mündliche Zusagen</div>
+                  <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' as const, alignItems: 'stretch' }}>
+                    {/* Calls heute */}
+                    <div style={{ flex: '1 1 140px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 16px', textAlign: 'center' as const }}>
+                      <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-.5px', color: 'var(--fg)' }}>{calendly?.stats?.todayCount ?? 0}</div>
+                      <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>Calls heute</div>
+                      <div style={{ fontSize: 10, color: 'var(--fg-subtle)', marginTop: 1 }}>Calendly · automatisch</div>
+                    </div>
+                    {/* Calls diese Woche */}
+                    <div style={{ flex: '1 1 140px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 16px', textAlign: 'center' as const }}>
+                      <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-.5px', color: 'var(--fg)' }}>{calendly?.stats?.thisWeekCount ?? 0}</div>
+                      <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>Calls diese Woche</div>
+                      <div style={{ fontSize: 10, color: 'var(--fg-subtle)', marginTop: 1 }}>Calendly · automatisch</div>
+                    </div>
+                    {/* Mündliche Zusagen */}
+                    <div style={{ flex: '1 1 180px', background: 'var(--bg)', border: '2px solid var(--brand)', borderRadius: 10, padding: '12px 16px', textAlign: 'center' as const }}>
+                      <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-.5px', color: 'var(--brand)' }}>{zusagen}</div>
+                      <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>Mündliche Zusagen heute</div>
+                      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 10 }}>
+                        <button onClick={() => { const v = Math.max(0, zusagen - 1); setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch {} }} style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--fg)', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>−</button>
+                        <button onClick={() => { const v = zusagen + 1; setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch {} }} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: 'var(--brand)', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>+</button>
+                      </div>
+                      <div style={{ fontSize: 10, color: 'var(--fg-subtle)', marginTop: 6 }}>manuell · zurückgesetzt um Mitternacht</div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Two-col layout */}
