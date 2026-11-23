@@ -37,6 +37,11 @@ function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 
+function todayKey() {
+  const d = new Date()
+  return `hmc_zusagen_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 export default function Dashboard() {
   const [password, setPassword] = useState('')
   const [authed, setAuthed] = useState(false)
@@ -47,11 +52,6 @@ export default function Dashboard() {
   const [notion, setNotion] = useState<NotionData | null>(null)
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system')
   const [zusagen, setZusagen] = useState(0)
-
-  const todayKey = () => {
-    const d = new Date()
-    return `hmc_zusagen_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-  }
 
   const fetchAll = useCallback(async () => {
     const [c, s, n] = await Promise.all([
@@ -74,7 +74,7 @@ export default function Dashboard() {
     try {
       const saved = localStorage.getItem(todayKey())
       if (saved !== null) setZusagen(parseInt(saved, 10) || 0)
-    } catch {}
+    } catch (_e) { /* ignore */ }
   }, [])
 
   useEffect(() => {
@@ -290,8 +290,8 @@ export default function Dashboard() {
                       <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-.5px', color: 'var(--brand)' }}>{zusagen}</div>
                       <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>Mündliche Zusagen heute</div>
                       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 10 }}>
-                        <button onClick={() => { const v = Math.max(0, zusagen - 1); setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch {} }} style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--fg)', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>−</button>
-                        <button onClick={() => { const v = zusagen + 1; setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch {} }} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: 'var(--brand)', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>+</button>
+                        <button onClick={() => { const v = Math.max(0, zusagen - 1); setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch (_e) { /* ignore */ } }} style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--fg)', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>−</button>
+                        <button onClick={() => { const v = zusagen + 1; setZusagen(v); try { localStorage.setItem(todayKey(), String(v)) } catch (_e) { /* ignore */ } }} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: 'var(--brand)', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'grid', placeItems: 'center' }}>+</button>
                       </div>
                       <div style={{ fontSize: 10, color: 'var(--fg-subtle)', marginTop: 6 }}>manuell · zurückgesetzt um Mitternacht</div>
                     </div>
