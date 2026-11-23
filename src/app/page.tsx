@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const AC_FORM_ACTION = process.env.NEXT_PUBLIC_AC_FORM_ACTION ?? "";
+const MAKE_WEBHOOK_URL = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL ?? "";
 
 export default function OptinPage() {
   const router = useRouter();
@@ -16,13 +16,13 @@ export default function OptinPage() {
     if (!name || !email) return;
     setLoading(true);
 
-    // Submit to ActiveCampaign (fire-and-forget)
-    if (AC_FORM_ACTION) {
-      const fd = new FormData();
-      fd.append("field[%FIRSTNAME%,0]", name);
-      fd.append("email", email);
-      fd.append("form", "1"); // replace with your AC form ID
-      navigator.sendBeacon(AC_FORM_ACTION, fd);
+    // Fire-and-forget → Make Webhook → CRM
+    if (MAKE_WEBHOOK_URL) {
+      fetch(MAKE_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      }).catch(() => {});
     }
 
     router.push(`/quiz?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`);
