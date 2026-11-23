@@ -35,50 +35,50 @@ function buildIcs(): string {
 function DankeContent() {
   const params = useSearchParams();
   const name = params.get("name") ?? "";
-
   const icsHref = buildIcs();
 
   return (
     <main className="min-h-screen bg-cream flex flex-col">
-      {/* Header */}
-      <header className="bg-forest text-cream px-5 py-3 text-center">
-        <span className="font-display text-[13px] font-light tracking-widest uppercase">Hiryze</span>
-      </header>
 
-      {/* 1. Bestätigung ───────────────────────────────────────────────────── */}
-      <section className="bg-forest text-cream px-4 pt-14 pb-16 text-center relative overflow-hidden">
+      {/* ── Sticky Bestätigungs-Banner ─────────────────────────────────────── */}
+      <div className="sticky top-0 z-50 bg-forest text-cream">
+        <div className="mx-auto max-w-5xl flex items-center justify-between gap-3 px-5 py-3">
+          <div className="flex items-center gap-2 text-[13px] font-semibold tracking-wide">
+            <svg viewBox="0 0 20 20" className="h-5 w-5 shrink-0 fill-steel" aria-hidden>
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <span>DU BIST DABEI · <span className="text-steel">{WEBINAR_DATE}</span> · {WEBINAR_TIME}</span>
+          </div>
+          <span className="hidden sm:block text-[11px] text-cream/50 tracking-widest uppercase">Hiryze</span>
+        </div>
+      </div>
+
+      {/* ── 1. Hero – Bestätigung & Aktionen ──────────────────────────────── */}
+      <section className="bg-forest text-cream px-4 pt-16 pb-20 text-center relative overflow-hidden">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(97,132,171,0.18),transparent_60%)]"
         />
-        <div className="relative mx-auto max-w-xl">
-          {/* Check icon */}
-          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-steel/50">
-            <svg viewBox="0 0 24 24" className="h-7 w-7 stroke-steel" fill="none" strokeWidth={1.6}>
-              <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-steel mb-3">
-            Du bist dabei
+        <div className="relative mx-auto max-w-2xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-steel mb-5">
+            {name ? `Schön, ${name}. Dein Platz ist reserviert.` : "Dein Platz ist reserviert."}
           </p>
-          <h1 className="font-display text-[clamp(26px,6vw,46px)] font-light leading-[1.1] tracking-tight">
-            {name ? `${name}, dein Platz` : "Dein Platz"} für{" "}
-            <span className="text-steel">{WEBINAR_DATE}</span>,{" "}
-            {WEBINAR_TIME} ist reserviert.
+          <h1 className="font-display text-[clamp(28px,6.5vw,52px)] font-light leading-[1.08] tracking-tight">
+            Bevor das Webinar startet –<br />
+            <em className="italic text-steel">lass uns schon jetzt anfangen.</em>
           </h1>
-          <p className="mt-5 text-[15px] leading-relaxed text-cream/70 max-w-md mx-auto">
-            Check dein Postfach – die Bestätigung ist unterwegs. Du bekommst
-            außerdem eine WhatsApp-Erinnerung kurz vor dem Webinar.
+          <p className="mt-6 text-[15px] leading-relaxed text-cream/70 max-w-lg mx-auto">
+            Die Bestätigung ist unterwegs in dein Postfach. Hier sind zwei Dinge,
+            die du schon heute tun kannst – bevor wir uns im Webinar sehen.
           </p>
 
           {/* Action buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-3">
             <a
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.08em] text-white transition hover:brightness-110"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-white transition hover:brightness-110"
             >
               <WhatsappIcon />
               WhatsApp-Erinnerung aktivieren
@@ -86,7 +86,7 @@ function DankeContent() {
             <a
               href={icsHref}
               download="meet-yourself-in-safety.ics"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/20 bg-cream/10 px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.08em] text-cream transition hover:bg-cream/20"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/20 bg-cream/10 px-6 py-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-cream transition hover:bg-cream/20"
             >
               <CalendarIcon />
               Im Kalender speichern
@@ -95,122 +95,190 @@ function DankeContent() {
         </div>
       </section>
 
-      {/* 2. Überleitung ──────────────────────────────────────────────────── */}
-      <section className="bg-white px-4 py-12 text-center">
-        <div className="mx-auto max-w-xl">
-          <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-transparent via-sand to-transparent" />
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-steel mb-3">
-            Schon jetzt anfangen
+      {/* ── 2. Überleitung ────────────────────────────────────────────────── */}
+      <section className="bg-white px-4 py-14 text-center border-b border-sand/40">
+        <div className="mx-auto max-w-2xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-steel mb-4">
+            Optional · Nur für dich
           </p>
-          <h2 className="font-display text-[clamp(22px,4vw,34px)] font-light text-forest leading-snug">
-            Bevor wir uns sehen:<br />
-            <em className="italic">Zwei Wege, schon jetzt anzufangen.</em>
+          <h2 className="font-display text-[clamp(22px,4vw,36px)] font-light text-forest leading-snug">
+            Zwei Wege, schon jetzt anzufangen –<br />
+            <em className="italic">bevor das Webinar beginnt.</em>
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-forest/65 max-w-md mx-auto">
-            Beides ist freiwillig. Dein Webinarplatz ist sicher, egal wie du
-            dich entscheidest.
+          <p className="mt-5 text-[15px] leading-relaxed text-forest/60 max-w-lg mx-auto">
+            Dein Webinarplatz ist sicher, egal wie du dich entscheidest. Diese
+            Angebote sind freiwillig und ergänzen das Webinar.
           </p>
         </div>
       </section>
 
-      {/* 3+4. Produkte ───────────────────────────────────────────────────── */}
-      <section className="bg-cream px-4 pb-16 pt-2">
-        <div className="mx-auto max-w-4xl grid gap-6 sm:grid-cols-2 items-start">
+      {/* ── 3. Produkt-Karten ─────────────────────────────────────────────── */}
+      <section className="bg-cream px-4 py-16">
+        <div className="mx-auto max-w-4xl grid gap-8 sm:grid-cols-2 items-stretch">
 
           {/* Produkt 1 – Playbook */}
-          <div className="rounded-2xl border border-sand bg-white p-7 flex flex-col h-full">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-forest/40 mb-1">
-              Digitales Playbook
-            </p>
-            <h3 className="font-display text-[22px] font-light text-forest leading-snug">
-              Breathwork-Playbook<br />
-              <em className="italic text-steel">„Tägliche Atemroutinen"</em>
-            </h3>
-            <p className="mt-3 text-[14px] leading-relaxed text-forest/65 flex-1">
-              Kurze Atemroutinen für deinen Alltag, damit Ruhe nicht nur im
-              Kurs passiert, sondern jeden Tag.
-            </p>
-
-            <div className="mt-5 flex items-baseline gap-2">
-              <span className="font-display text-[36px] font-light text-forest">17 €</span>
-              <span className="text-[13px] text-forest/40">einmalig</span>
+          <div className="rounded-2xl border border-sand bg-white overflow-hidden flex flex-col">
+            {/* Type badge */}
+            <div className="bg-cream border-b border-sand px-6 py-3 flex items-center justify-between">
+              <span className="inline-block rounded-full bg-forest/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-forest">
+                Digitales Playbook
+              </span>
+              <span className="text-[13px] font-light text-forest/40">PDF</span>
             </div>
 
-            <ul className="mt-4 space-y-1.5 text-[13px] text-forest/60">
-              {["Sofort nach Kauf als Download", "PDF, mobil optimiert", "Keine Vorkenntnisse nötig"].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <CheckMini /> {t}
-                </li>
-              ))}
-            </ul>
+            {/* Visual placeholder */}
+            <div className="bg-gradient-to-br from-cream-dark to-sand/40 h-40 flex items-center justify-center">
+              <div className="rounded-xl bg-white shadow-sm border border-sand/60 w-24 h-32 flex flex-col items-center justify-center gap-2 opacity-80">
+                <BookIcon />
+                <span className="text-[9px] font-semibold uppercase tracking-widest text-forest/40">Playbook</span>
+              </div>
+            </div>
 
-            <a
-              href={CHECKOUT_PLAYBOOK}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-7 block rounded-xl border border-forest text-center px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.08em] text-forest transition hover:bg-forest hover:text-cream"
-            >
-              Playbook für 17 € holen
-            </a>
+            {/* Content */}
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="font-display text-[20px] font-light text-forest leading-snug">
+                Breathwork-Playbook<br />
+                <em className="italic text-steel text-[18px]">„Tägliche Atemroutinen"</em>
+              </h3>
+              <p className="mt-3 text-[14px] leading-relaxed text-forest/65 flex-1">
+                Kurze Atemroutinen für deinen Alltag – damit Ruhe nicht nur im
+                Webinar passiert, sondern jeden Tag. Konkret, direkt anwendbar.
+              </p>
+
+              <ul className="mt-5 space-y-2 text-[13px] text-forest/60">
+                {[
+                  "Sofort nach Kauf als PDF-Download",
+                  "Mobil optimiert · keine Vorkenntnisse nötig",
+                  "Passt zu jeder Tagesroutine",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5">
+                    <CheckMini className="text-steel mt-0.5" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6 flex items-baseline gap-2">
+                <span className="font-display text-[38px] font-light text-forest">17 €</span>
+                <span className="text-[13px] text-forest/40">einmalig · inkl. MwSt.</span>
+              </div>
+
+              <a
+                href={CHECKOUT_PLAYBOOK}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 block rounded-xl border border-forest text-center px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-forest transition hover:bg-forest hover:text-cream"
+              >
+                Playbook für 17 € holen
+              </a>
+            </div>
           </div>
 
-          {/* Produkt 2 – Live Session (empfohlen) */}
-          <div className="relative rounded-2xl border-2 border-forest bg-forest text-cream p-7 flex flex-col h-full">
-            {/* Badge */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="rounded-full bg-steel px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white whitespace-nowrap">
+          {/* Produkt 2 – Live Session (Empfehlung) */}
+          <div className="rounded-2xl border-2 border-forest bg-forest text-cream overflow-hidden flex flex-col relative">
+            {/* Empfehlung badge */}
+            <div className="absolute -top-px left-1/2 -translate-x-1/2">
+              <span className="inline-block rounded-b-full bg-steel px-5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white whitespace-nowrap">
                 Empfehlung
               </span>
             </div>
 
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cream/40 mt-2 mb-1">
-              Live online · 2 Stunden
-            </p>
-            <h3 className="font-display text-[22px] font-light text-cream leading-snug">
-              Integrations-Session{" "}
-              <em className="italic text-steel">live</em>
-            </h3>
-            <p className="mt-3 text-[14px] leading-relaxed text-cream/70 flex-1">
-              2 Stunden live mit Lena, in denen du erlebst, wie sich Breathwork
-              in deinem Körper anfühlt – bevor das Webinar startet.
-            </p>
-
-            <div className="mt-5 flex items-baseline gap-2">
-              <span className="font-display text-[36px] font-light text-cream">64 €</span>
-              <span className="text-[13px] text-cream/40">einmalig</span>
+            {/* Type badge */}
+            <div className="bg-forest-light/40 border-b border-cream/10 px-6 py-3 mt-7 flex items-center justify-between">
+              <span className="inline-block rounded-full bg-cream/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cream/80">
+                Live online · 2 Stunden
+              </span>
+              <span className="text-[13px] font-light text-cream/30">Zoom</span>
             </div>
 
-            <ul className="mt-4 space-y-1.5 text-[13px] text-cream/60">
-              {[
-                `Termin: ${SESSION_DATUM}`,
-                "Live mit Lena, online",
-                "Kleine Gruppe, persönliche Atmosphäre",
-                "Perfekte Vorbereitung fürs Webinar",
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <CheckMiniLight /> {t}
-                </li>
-              ))}
-            </ul>
+            {/* Visual placeholder */}
+            <div className="bg-forest-dark/40 h-40 flex items-center justify-center">
+              <div className="rounded-full bg-steel/20 border border-steel/40 w-20 h-20 flex items-center justify-center">
+                <LiveIcon />
+              </div>
+            </div>
 
-            <a
-              href={CHECKOUT_SESSION}
-              target="_blank"
-              rel="noreferrer"
-              className="relative mt-7 overflow-hidden block rounded-xl bg-steel text-center px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.08em] text-white transition hover:brightness-110"
-            >
-              <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/2 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer" />
-              <span className="relative">Platz in der Live-Session sichern</span>
-            </a>
+            {/* Content */}
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="font-display text-[20px] font-light text-cream leading-snug">
+                Integrations-Session<br />
+                <em className="italic text-steel text-[18px]">live mit Lena</em>
+              </h3>
+              <p className="mt-3 text-[14px] leading-relaxed text-cream/70 flex-1">
+                2 Stunden live mit Lena, in denen du erlebst, wie sich
+                Breathwork in deinem Körper anfühlt – bevor das Webinar
+                startet. Kleine Gruppe, persönliche Atmosphäre.
+              </p>
+
+              <ul className="mt-5 space-y-2 text-[13px] text-cream/60">
+                {[
+                  `Termin: ${SESSION_DATUM}`,
+                  "Live mit Lena, online via Zoom",
+                  "Kleine Gruppe · persönliche Begleitung",
+                  "Perfekte Vorbereitung fürs Webinar",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5">
+                    <CheckMini className="text-steel mt-0.5" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6 flex items-baseline gap-2">
+                <span className="font-display text-[38px] font-light text-cream">64 €</span>
+                <span className="text-[13px] text-cream/40">einmalig · inkl. MwSt.</span>
+              </div>
+
+              <a
+                href={CHECKOUT_SESSION}
+                target="_blank"
+                rel="noreferrer"
+                className="relative mt-5 overflow-hidden block rounded-xl bg-steel text-center px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-white transition hover:brightness-110"
+              >
+                <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/2 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer" />
+                <span className="relative">Platz in der Live-Session sichern</span>
+              </a>
+            </div>
           </div>
 
         </div>
 
         {/* Disclaimer */}
-        <p className="mt-10 text-center text-[13px] text-forest/40 max-w-lg mx-auto leading-relaxed">
-          Beides ist freiwillig. Dein Webinarplatz ist sicher, egal wie du
-          dich entscheidest.
+        <p className="mt-10 text-center text-[12px] text-forest/35 max-w-md mx-auto leading-relaxed">
+          Beides ist freiwillig. Dein kostenloser Webinarplatz ist sicher –
+          egal wie du dich entscheidest.
         </p>
+      </section>
+
+      {/* ── 4. Wiederholungs-CTA ──────────────────────────────────────────── */}
+      <section className="bg-white px-4 py-14 border-t border-sand/40 text-center">
+        <div className="mx-auto max-w-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-steel mb-3">
+            Noch eine Sache
+          </p>
+          <h2 className="font-display text-[clamp(20px,3.5vw,30px)] font-light text-forest leading-snug mb-6">
+            Vergiss nicht, dir den Termin zu sichern.
+          </h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-white transition hover:brightness-110"
+            >
+              <WhatsappIcon />
+              WhatsApp-Erinnerung
+            </a>
+            <a
+              href={icsHref}
+              download="meet-yourself-in-safety.ics"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-sand bg-cream px-5 py-3.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-forest transition hover:border-steel"
+            >
+              <CalendarIcon />
+              Kalender-Eintrag
+            </a>
+          </div>
+        </div>
       </section>
 
       <SiteFooter />
@@ -244,18 +312,29 @@ function CalendarIcon() {
   );
 }
 
-function CheckMini() {
+function CheckMini({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-steel" fill="none" stroke="currentColor" strokeWidth={2}>
+    <svg viewBox="0 0 16 16" className={`h-4 w-4 shrink-0 ${className}`} fill="none" stroke="currentColor" strokeWidth={2}>
       <path d="M3 8l3 3 7-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function CheckMiniLight() {
+function BookIcon() {
   return (
-    <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-steel" fill="none" stroke="currentColor" strokeWidth={2}>
-      <path d="M3 8l3 3 7-6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" className="h-8 w-8 text-steel/60" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden>
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+      <path d="M8 7h8M8 11h5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LiveIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-9 w-9 text-steel" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M6.34 6.34a8 8 0 000 11.32M17.66 17.66a8 8 0 000-11.32M3.51 3.51a12 12 0 000 16.98M20.49 20.49a12 12 0 000-16.98" strokeLinecap="round" />
     </svg>
   );
 }
